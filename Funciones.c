@@ -10,7 +10,7 @@ void instrucciones(){
 	printf("\nInstrucciones: \nDo you got plans tonight? \nI'm a couple hundred miles from Japan and I\nI was thinking I could fly to your hotel tonight\n'Cause I-I-I can't get you off my mind\nCan't get you off my mind\nCan't get you off my mind (uh)\n");
 }
 void instruccionesDimensionador(){
-	printf("\n-> Bienvenido al dimensionador!\n\tPara crear el juego necesitamos un numero de filas y\n\tcolumnas mayores que 5 y menores a 15\n********Ingresa tus datos!");
+	printf("-> Bienvenido al dimensionador!\n\tPara crear el juego necesitamos un numero de filas y\n\tcolumnas mayores que 5 y menores a 15\n********Ingresa tus datos!");
 }
 
 //Funciones globales
@@ -54,7 +54,7 @@ void limpiarConsola(){
 }
 
 //Fase 1: Menu
-int menu(){
+int menu(int *filas, int *columnas){
 	char entrada[100];
 	int opcion;
 	bool autorizado = false;
@@ -66,20 +66,20 @@ int menu(){
 			switch(opcion){
 				case 1:{
 					autorizado = true;
-					limpiarConsola();
-					printf("\nPreparando juego...");
+					printf("Preparando juego...");
 					//Pedir dimensiones y validar
-					dimensionador();
-					return 0;
-				}
-				case 2:{
-					instrucciones();
-					autorizado = true;
+					dimensionador(filas, columnas);
 					return 1;
 				}
+				case 2:{
+					limpiarConsola();
+					autorizado = true;
+					instrucciones();
+					return 2;
+				}
 				case 3:{
-					printf("\nSaliendo del juego...");
-					exit(0);
+					printf("\nSaliendo del juego...\n");
+					return 3;
 				}
 				default:{
 					limpiarConsola();
@@ -113,38 +113,50 @@ bool verificarDimensiones(int filas, int columnas) {
 			printf("\nDimensiones aceptadas.");
 			return true;
 		case 1:
-			printf("\nDimensiones no aceptadas :c\nTu error esta en las FILAS\nIngresa de nuevo las dimensiones :D\n");
+			limpiarConsola();
+			printf("\nERROR -> Dimensiones no aceptadas :c\nTu error esta en las FILAS\nIngresa de nuevo las dimensiones :D\n");
 			break;
 		case 2:
-			printf("\nDimensiones no aceptadas :c\nTu error esta en las COLUMNAS\nIngresa de nuevo las dimensiones :D\n");
+			limpiarConsola();
+			printf("\nERROR -> Dimensiones no aceptadas :c\nTu error esta en las COLUMNAS\nIngresa de nuevo las dimensiones :D\n");
 			break;
 		default:
-			printf("\nDimensiones super rechazadas :c\nLas filas y columnas son menores o mayores del rango\nIngresa de nuevo las dimensiones :D\n");
+			limpiarConsola();
+			printf("\nERROR -> Dimensiones super rechazadas :c\nLas filas y columnas son menores o mayores del rango\nIngresa de nuevo las dimensiones :D\n");
 			break;
 	}
 	return false;
 }
-void dimensionador(){
-	char entrada1[10];
-	char entrada2[10];
-	int filas = 0, columnas = 0, posibleError;
+void dimensionador(int *filas, int *columnas){
+	char entrada1[10], entrada2[10];
+	int posibleError;
 	bool dimensionadorActivado = false;
 	
-	instruccionesDimensionador();
-	
+	limpiarConsola();
 	do{
+		
+		instruccionesDimensionador();
 		printf("\nIngresa las dimensiones: ");
 		printf("\nFilas: ");
 		fgets(entrada1, sizeof(entrada1), stdin);
-		filas = convertirEntrada(entrada1);
+		*filas = convertirEntrada(entrada1);
 
 		printf("\nColumnas: ");
 		fgets(entrada2, sizeof(entrada2), stdin);
-		columnas = convertirEntrada(entrada2);
+		*columnas = convertirEntrada(entrada2);
 
-		dimensionadorActivado = verificarDimensiones(filas, columnas);
+		dimensionadorActivado = verificarDimensiones(*filas, *columnas);
 	}while(!dimensionadorActivado);
 }
+
+void inicializarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas){
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            tablero[i][j] = '~';  // Agua
+        }
+    }
+}
+
 /*
 void mostrarMatriz(char matriz[][], int filas, int columnas){
 	for(int i=0;i<filas;i++){
