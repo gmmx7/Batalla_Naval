@@ -12,84 +12,119 @@ void instrucciones(){
 void instruccionesDimensionador(){
 	printf("-> Bienvenido al dimensionador!\n\tPara crear el juego necesitamos un numero de filas y\n\tcolumnas mayores que 5 y menores a 15\n********Ingresa tus datos!");
 }
+void mostrarOpcJuego(){
+	printf("\n-> Opciones de juego: \n1. Partida en solitario \n2. Multijugador \n3. Regresar al inicio");
+}
 
 //Funciones globales
-int conversor(char caracter){//Conversor de un solo dígito
-	int entero = caracter - '0';
-	return entero;
+int conversor(char caracter) {
+	return caracter - '0';
 }
-int unirNumeros(int numero, int resultado){
+int esNumero(char caracter) {
+	return caracter >= '0' && caracter <= '9';
+}
+int unirNumeros(int numero, int resultado) {
 	return resultado * 10 + numero;
 }
-int convertirEntrada(char entrada[]){
-	int i = 0, resultado = 0, numero = 0;
+int convertirCadenaNumerica(char *entrada) {
+	int i = 0, resultado = 0;
 	char caracter;
-	
-	if(entrada[i] == '\n'){
-		printf("NOOOO, papu, un salto de linea :c\n");
+
+	if (entrada[i] == '\n') {
+		printf("NOOOO, papu, un salto de línea :c\n");
 		return -1;
 	}
-	
-	while(entrada[i] != '\0'){
-		if(entrada[i] == '\n'){
-			break;
-		}
-		if(entrada[i] >= '0' && entrada[i] <= '9'){
-			caracter = entrada[i];
-			numero = conversor(caracter);
-			resultado = unirNumeros(numero, resultado);
-		}else if(entrada[i] == ' '){
+
+	while (entrada[i] != '\0') {
+		if (entrada[i] == '\n') break;
+
+		caracter = entrada[i];
+
+		if (esNumero(caracter)) {
+			resultado = unirNumeros(conversor(caracter), resultado);
+		} else if (caracter == ' ') {
 			printf("NOOOO, un espacio :c\n");
 			return -1;
-		}else{  
-			printf("Caracter inválido :c : %c\n", entrada[i]);
+		} else {
+			printf("Caracter inválido :c : %c\n", caracter);
 			return -1;
 		}
 		i++;
 	}
+
 	return resultado;
+}
+int convertirEntrada(char *entrada) {
+	return convertirCadenaNumerica(entrada);
 }
 void limpiarConsola(){
     printf("\033[H\033[J");
 }
+void mostrarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas){
+	//Imprimir el 1 2 3 4 5 ... (solo es algo de adorno pues)
+	printf("   ");
+	for(int col = 0;col < columnas;col++){
+		printf("%d ",col);
+	}
+	printf("\n");
+	//aquí se maneja la matriz real
+	for(int i=0;i<filas;i++){
+		printf("%2d |", i);
+		for(int j=0;j<columnas;j++){
+			printf(" %c", tablero[i][j]);
+		}
+		printf("\n");
+	}
+}
+void pausa(){
+    printf("\nPresiona ENTER para continuar...");
+    while (getchar() != '\n');
+}
+char* convertirAMayusculas(char cadena[]) {
+    for (int i = 0; cadena[i] != '\0'; i++) {
+        if (cadena[i] >= 'a' && cadena[i] <= 'z') {
+            cadena[i] = cadena[i] - 32;
+        }
+    }
+}
 
 //Fase 1: Menu
-int menu(int *filas, int *columnas){
-	char entrada[100];
-	int opcion;
-	bool autorizado = false;
-	
-	do{
-		printf("\nOpcion: ");
-		fgets(entrada, sizeof(entrada), stdin);
-		opcion = convertirEntrada(entrada);
-			switch(opcion){
-				case 1:{
-					autorizado = true;
-					printf("Preparando juego...");
-					//Pedir dimensiones y validar
-					dimensionador(filas, columnas);
-					return 1;
-				}
-				case 2:{
-					limpiarConsola();
-					autorizado = true;
-					instrucciones();
-					return 2;
-				}
-				case 3:{
-					printf("\nSaliendo del juego...\n");
-					return 3;
-				}
-				default:{
-					limpiarConsola();
-					printf("Opcion incorrecta papu, ingresa una opcion valida");
-					mostrarOpcMenu();
-					break;
-				}
-			}
-	}while(!autorizado);
-	return -1;
+int menu(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[][MAX_COLUMNAS], int *filas, int *columnas) {
+    char entrada[100];
+    int opcion;
+    bool autorizado = false;
+
+    do {
+        printf("\nOpción: ");
+        fgets(entrada, sizeof(entrada), stdin);
+        opcion = convertirEntrada(entrada);
+
+        switch (opcion) {
+            case 1: {
+                autorizado = true;
+                dimensionador(filas, columnas); // 🔧 Aquí defines dimensiones
+                return 1;
+            }
+            case 2: {
+                limpiarConsola();
+                autorizado = true;
+                instrucciones();
+                return 2;
+            }
+            case 3: {
+                printf("\nSaliendo del juego...\n");
+                return 3;
+            }
+            default: {
+                limpiarConsola();
+                printf("Opción incorrecta papu, ingresa una opción válida\n");
+                mostrarOpcMenu();
+                break;
+            }
+        }
+    } while (!autorizado);
+
+    return -1;
 }
 
 //Fase 2: Creación de tableros
@@ -148,22 +183,127 @@ void dimensionador(int *filas, int *columnas){
 		dimensionadorActivado = verificarDimensiones(*filas, *columnas);
 	}while(!dimensionadorActivado);
 }
-
-void inicializarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas){
+bool inicializarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas){
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
             tablero[i][j] = '~';  // Agua
         }
     }
+    return true;
 }
 
 /*
-void mostrarMatriz(char matriz[][], int filas, int columnas){
-	for(int i=0;i<filas;i++){
-		printf(" %s ", matriz[i][]);
-		for(int j=0;i<columnas;j++){
-			printf(" %s", );
+	Fase 3: Flujo del juego
+	Dos casos: Partida individual, Multijugador
+*/
+void juego(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[][MAX_COLUMNAS], int *filas, int *columnas){
+	char entrada[100];
+	int  tipoDeJuego;
+	char opcion;
+	bool autorizado = false;
+	do{
+		mostrarOpcJuego();
+		printf("\nOpcion: ");
+		fgets(entrada, sizeof(entrada), stdin);
+		opcion = convertirEntrada(entrada);
+		switch(opcion){
+			case 1:{
+				//Partida en solitario
+				tipoDeJuego = 1;
+				printf("----------PARTIDA EN SOLITARIO--------");
+				prepararJuego(tableroJugador, tableroComputadora, filas, columnas, &tipoDeJuego);
+				break;
+			}
+			case 2:{
+				//Multijugador
+				break;
+			}
 		}
+	}while(!autorizado);
+}
+void entradaConsola(char tablero[][MAX_COLUMNAS], int filas, int columnas){
+    char entrada[100];
+    int fila, columna, completado, barcos = 0;
+    bool autorizado = false;
+	
+	completado = (filas * columnas) * 0.25;
+	
+    do {
+        printf("\n-> Entrada: "); //Coordenadas b13
+        fgets(entrada, sizeof(entrada), stdin);
+
+        if (entrada[0] == '\n' || entrada[1] == '\0') {
+            printf("Entrada invalida: muy corta.\n");
+            continue;
+        }
+        
+        char letra = entrada[0];
+
+        if (letra >= 'A' && letra <= 'Z') {
+            fila = letra - 'A';
+        } else if (letra >= 'a' && letra <= 'z') {
+            fila = letra - 'a';
+        } else {
+            printf("Primera parte inválida: debe ser una letra.\n");
+            continue;
+        }
+
+        // Convertimos el resto como número
+        int numero = convertirCadenaNumerica(&entrada[1]);
+
+        if (numero < 0) {
+            printf("Numero invalido.\n");
+            continue;
+        }
+
+        columna = numero;
+
+        if (fila >= 0 && fila < filas && columna >= 0 && columna < columnas) {
+            tablero[fila][columna] = 'B';  // Colocamos el barco
+            barcos++;
+            if(barcos == completado){
+            	autorizado = true;
+			}
+			limpiarConsola();
+			mostrarTablero(tablero,filas,columnas);
+			pausa();
+			limpiarConsola();
+        } else {
+            printf("Coordenadas fuera de rango.\n");
+        }
+    } while (!autorizado);
+}
+void prepararJuego(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[][MAX_COLUMNAS], int *filas, int *columnas, int *tipoDeJuego){
+	bool iniciadoTablero1 = false;
+	bool iniciadoTablero2 = false;
+	switch (*tipoDeJuego) {
+	    case 1: {
+	        printf("Preparando juego...");
+	        dimensionador(filas, columnas);
+	        bool iniciadoTablero1 = inicializarTablero(tableroJugador, *filas, *columnas);
+	
+	        if (!iniciadoTablero1) {
+	            printf("\nTablero de %d filas x %d columnas iniciado...\n", *filas, *columnas);
+	        }
+	
+	        limpiarConsola();
+	        printf("-> Tablero vacío iniciado...\n");
+	        mostrarTablero(tableroJugador, *filas, *columnas);
+	
+	        printf("\n-> Iniciando rellenado...\n");
+	        pausa();
+	        limpiarConsola();
+	        break;
+	    }
+	    case 2: {
+	        printf("Preparando multijugador...");
+	        break;
+	    }
+	    default: {
+	        printf("Ha ocurrido un error al iniciar el juego.");
+	        break;
+	    }
 	}
 }
-*/
+
+//Fase 4: Gestor de funciones de usuario dentro del juego
