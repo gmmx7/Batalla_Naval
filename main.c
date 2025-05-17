@@ -20,7 +20,7 @@ int main() {
         request = menu(tableroJugador, tableroComputadora, &filas, &columnas);
 
         if (request == 1) {
-            prepararJuego(tableroJugador, tableroComputadora, &filas, &columnas, &tipoDeJuego);  // ✔️
+            prepararJuego(tableroJugador, tableroComputadora, &filas, &columnas, &tipoDeJuego);  // ✔
 
             // 🔥 Aquí sí se llama a juego() porque ya tienes todo listo
             juego(tableroJugador, tableroComputadora, &filas, &columnas);
@@ -35,4 +35,3 @@ int main() {
 
     return 0;
 }
-

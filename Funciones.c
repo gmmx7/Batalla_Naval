@@ -10,7 +10,7 @@ void instrucciones(){
 	printf("\nInstrucciones: \nDo you got plans tonight? \nI'm a couple hundred miles from Japan and I\nI was thinking I could fly to your hotel tonight\n'Cause I-I-I can't get you off my mind\nCan't get you off my mind\nCan't get you off my mind (uh)\n");
 }
 void instruccionesDimensionador(){
-	printf("-> Bienvenido al dimensionador!\n\tPara crear el juego necesitamos un numero de filas y\n\tcolumnas mayores que 5 y menores a 15\n********Ingresa tus datos!");
+	printf("-> Bienvenido al dimensionador!\n\tPara crear el juego necesitamos un numero de filas y\n\tcolumnas mayores que 5 y menores a 15\n**Ingresa tus datos!");
 }
 void mostrarOpcJuego(){
 	printf("\n-> Opciones de juego: \n1. Partida en solitario \n2. Multijugador \n3. Regresar al inicio");
@@ -305,5 +305,3 @@ void prepararJuego(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[
 	    }
 	}
 }
-
-//Fase 4: Gestor de funciones de usuario dentro del juego

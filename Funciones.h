@@ -10,7 +10,7 @@ void instruccionesDimensionador();
 void mostrarOpcJuego();
 
 //Funciones globales
-int conversor(char caracter);//Conversor de un solo dÃ­gito
+int conversor(char caracter);//Conversor de un solo dígito
 int esNumero(char caracter);
 int unirNumeros(int numero, int resultado);
 int convertirCadenaNumerica(char *entrada);
