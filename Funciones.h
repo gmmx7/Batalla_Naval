@@ -1,40 +1,46 @@
+#ifndef FUNCIONES_H
+#define FUNCIONES_H
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
-#define MAX_FILAS 10
+#include <windows.h>
+
+// Constantes para tamaño máximo del tablero
+#define MAX_FILAS 15
 #define MAX_COLUMNAS 15
 
-//Mostrar textos -> Funcionamiento
-void mostrarOpcMenu();
-void instrucciones();
-void instruccionesDimensionador();
-void mostrarOpcJuego();
+// ---------------------- Menús y pantallas ----------------------
+void mostrarOpcMenu();                             // Muestra el menú principal
+void instrucciones();                              // Muestra instrucciones (por ahora decorativas)
+void instruccionesDimensionador();                 // Instrucciones para ingresar dimensiones
+void mostrarOpcJuego();                            // Muestra opciones de juego
+int pantallaPrincipal();                           // Espera ENTER para continuar desde la pantalla de inicio
+void menu(char tableroJugador1[][MAX_COLUMNAS],
+          char tableroJugador2[][MAX_COLUMNAS],
+          int filas, int columnas);                // Muestra y controla el menú principal
 
-//Funciones globales
-int conversor(char caracter);//Conversor de un solo d�gito
-int esNumero(char caracter);
-int unirNumeros(int numero, int resultado);
-int convertirCadenaNumerica(char *entrada);
-int convertirEntrada(char *entrada);
-void limpiarConsola();
-void mostrarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas);
-void pausa();
-char* convertirAMayusculas(char cadena[]);
+// ---------------------- Funciones utilitarias ----------------------
+void limpiarConsola();                             // Limpia la consola (ANSI)
+void limpiarBuffer();							   // Limpia el buffer
+void ocultarCursor();
+void mostrarCursor();
+bool enter();                                      // Espera a que el usuario presione ENTER
+char convertirAMayusculas(char cadena[]);         // Convierte cadena a mayúsculas
 
-//Fase 1: Menu
-int menu(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[][MAX_COLUMNAS], int *filas, int *columnas);
+// ---------------------- Validaciones y conversiones ----------------------
+int esNumero(char caracter);                       // Verifica si un char es número
+int conversor(char caracter);                      // Convierte char numérico a entero
+int unirNumeros(int numero, int resultado);        // Une dígitos a un número completo
+int convertirCadenaNumerica(char *entrada);        // Convierte string numérico a entero con validaciones
+int convertirEntrada(char *entrada);               // Wrapper para conversión
 
-//Fase 2: Dimensionar y crear tablero
-int validarDimensiones(int filas, int columnas);
-bool verificarDimensiones(int filas, int columnas);
-void dimensionador(int *filas, int *columnas);
+// ---------------------- Tablero ----------------------
+void mostrarTablero(char tablero[][MAX_COLUMNAS],
+                    int filas, int columnas);      // Muestra el tablero
+
+// ---------------------- Lógica del juego (declarar cuando lo agregues) ----------------------
+void juego(char tablero1[][MAX_COLUMNAS],char tablero2[][MAX_COLUMNAS],int *filas, int *columnas,int modo);                              // Esta debes implementarla luego
 bool inicializarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas);
-
-/*
-	Fase 3: Flujo del juego
-	Dos casos: Partida individual, Multijugador
-*/
-void juego(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[][MAX_COLUMNAS], int *filas, int *columnas);
-void entradaConsola(char tablero[][MAX_COLUMNAS], int filas, int columnas);
-void prepararJuego(char tableroJugador[][MAX_COLUMNAS], char tableroComputadora[][MAX_COLUMNAS], int *filas, int *columnas, int *tipoDeJuego);
-
-//Fase 4: Gestor de funciones de usuario dentro del juego
+int validarDimensiones(int filas, int columnas); 
+#endif
