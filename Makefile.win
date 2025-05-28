@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = main.o Funciones.o Escenarios.o
-LINKOBJ  = main.o Funciones.o Escenarios.o
+OBJ      = main.o Reutilizable.o uso.o menu.o Juego.o Funciones_Usuario.o
+LINKOBJ  = main.o Reutilizable.o uso.o menu.o Juego.o Funciones_Usuario.o
 LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc
 INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
 CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
@@ -27,8 +27,17 @@ $(BIN): $(OBJ)
 main.o: main.c
 	$(CC) -c main.c -o main.o $(CFLAGS)
 
-Funciones.o: Funciones.c
-	$(CC) -c Funciones.c -o Funciones.o $(CFLAGS)
+Reutilizable.o: Reutilizable.c
+	$(CC) -c Reutilizable.c -o Reutilizable.o $(CFLAGS)
 
-Escenarios.o: Escenarios.c
-	$(CC) -c Escenarios.c -o Escenarios.o $(CFLAGS)
+uso.o: uso.c
+	$(CC) -c uso.c -o uso.o $(CFLAGS)
+
+menu.o: menu.c
+	$(CC) -c menu.c -o menu.o $(CFLAGS)
+
+Juego.o: Juego.c
+	$(CC) -c Juego.c -o Juego.o $(CFLAGS)
+
+Funciones_Usuario.o: Funciones_Usuario.c
+	$(CC) -c Funciones_Usuario.c -o Funciones_Usuario.o $(CFLAGS)

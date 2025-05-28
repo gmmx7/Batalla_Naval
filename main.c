@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Funciones.h"
-
+#include "menu.h"
+#include "Reutilizable.h"
 int main() {
     char tablero1[MAX_FILAS][MAX_COLUMNAS];
     char tablero2[MAX_FILAS][MAX_COLUMNAS];
