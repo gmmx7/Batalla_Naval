@@ -44,7 +44,7 @@ int esNumero(char caracter) {
 int unirNumeros(int numero, int resultado) {
     return resultado * 10 + numero;
 }
-int convertirCadenaNumerica(char *entrada) { //Solo funciona en el menú !NO SE IMPLEMENTE EN ALGUNA OTRA FUNCIÓN!
+int convertirCadenaNumerica(char *entrada) { 
     int i = 0, resultado = 0;
     char caracter;
 
@@ -80,13 +80,14 @@ void limpiarConsola() {
     printf("\033[H\033[J");
 }
 void mostrarTablero(char tablero[][MAX_COLUMNAS], int filas, int columnas) {
-    printf("     ");
+    printf("    ");
     for (int col = 0; col < columnas; col++) {
         printf("%d ", col + 1);
     }
     printf("\n");
     for (int i = 0; i < filas; i++) {
-        printf("%2d |", i + 1);
+    	
+        printf("%c |", 65 + i);
         for (int j = 0; j < columnas; j++) {
             printf(" %c", tablero[i][j]);
         }
